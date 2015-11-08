@@ -1,0 +1,28 @@
+{
+  "name": "cyneek/yii2-uploadBehavior",
+  "description": "Upload behavior for Yii 2",
+  "keywords": [
+    "yii",
+    "yii2",
+    "upload"
+  ],
+  "version": "0.0.2",
+  "type": "yii2-extension",
+  "license": "BSD",
+  "authors": [
+    {
+      "name": "Patroklo",
+      "email": "patroklo@gmail.com"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2": "*",
+    "league/flysystem": "*",
+    "yiisoft/yii2-imagine": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "cyneek\\yii2\\upload\\behavior\\": ""
+    }
+  }
+}
