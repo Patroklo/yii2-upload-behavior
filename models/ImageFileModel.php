@@ -1,7 +1,7 @@
 <?php
 
 
-namespace cyneek\yii2\upload\models;
+namespace cyneek\yii2\uploadBehavior\models;
 
 
 use Imagine\Image\ManipulatorInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace cyneek\yii2\upload\models;
+namespace cyneek\yii2\uploadBehavior\models;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;

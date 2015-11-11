@@ -22,7 +22,7 @@
   },
   "autoload": {
     "psr-4": {
-      "cyneek\\yii2\\upload\\behavior\\": ""
+      "cyneek\\yii2\\uploaduploadBehavior\\": ""
     }
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace cyneek\yii2\upload;
+namespace cyneek\yii2\uploadBehavior;
 
 use cyneek\yii2\upload\models\AbstractFileManager;
 use cyneek\yii2\upload\models\FileModel;

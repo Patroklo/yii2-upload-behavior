@@ -1,10 +1,11 @@
 <?php
-namespace cyneek\yii2\upload;
+namespace cyneek\yii2\uploadBehavior;
 
 use cyneek\yii2\upload\models\FileModel;
 use cyneek\yii2\upload\models\ImageFileModel;
 use Yii;
 use yii\helpers\ArrayHelper;
+
 
 /**
  * fileupload module
