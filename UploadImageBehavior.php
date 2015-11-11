@@ -2,7 +2,7 @@
 
 namespace cyneek\yii2\uploadBehavior;
 
-use cyneek\yii2\upload\models\ImageFileModel;
+use cyneek\yii2\uploadBehavior\models\ImageFileModel;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;

@@ -2,8 +2,8 @@
 
 namespace cyneek\yii2\uploadBehavior;
 
-use cyneek\yii2\upload\models\AbstractFileManager;
-use cyneek\yii2\upload\models\FileModel;
+use cyneek\yii2\uploadBehavior\models\AbstractFileManager;
+use cyneek\yii2\uploadBehavior\models\FileModel;
 use Yii;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
