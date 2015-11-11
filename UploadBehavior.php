@@ -12,8 +12,7 @@ use yii\db\BaseActiveRecord;
 use yii\web\UploadedFile;
 
 /**
- * UploadBehavior automatically uploads file and fills the specified attribute
- * with a value of the name of the uploaded file.
+ * UploadBehavior automatically uploads a file and adds a new row in the uploaded files table.
  *
  * To use UploadBehavior, insert the following code to your ActiveRecord class:
  *
@@ -346,115 +345,5 @@ class UploadBehavior extends Behavior
             $this->deleteFiles($this->attribute);
         }
     }
-
-
-    /***
-     * =============================================================================================
-     * =============================================================================================
-     *
-     * BORRAR
-     *
-     * =============================================================================================
-     * =============================================================================================
-     */
-
-
-//    /**
-//     * Returns file path for the attribute.
-//     * @param string $attribute
-//     * @param boolean $old
-//     * @return string|null the file path.
-//     */
-//    public function getUploadPath($attribute, $old = FALSE)
-//    {
-//        /** @var BaseActiveRecord $model */
-//        $model = $this->owner;
-//        $path = $this->resolvePath($this->path);
-//        $fileName = ($old === TRUE) ? $model->getOldAttribute($attribute) : $model->$attribute;
-//
-//        return $fileName ? Yii::getAlias($path . '/' . $fileName) : NULL;
-//    }
-//
-//    /**
-//     * Returns file url for the attribute.
-//     * @param string $attribute
-//     * @return string|null
-//     */
-//    public function getUploadUrl($attribute)
-//    {
-//        /** @var BaseActiveRecord $model */
-//        $model = $this->owner;
-//        $url = $this->resolvePath($this->url);
-//        $fileName = $model->getOldAttribute($attribute);
-//
-//        return $fileName ? Yii::getAlias($url . '/' . $fileName) : NULL;
-//    }
-//
-//    /**
-//     * Replaces all placeholders in path variable with corresponding values.
-//     */
-//    protected function resolvePath($path)
-//    {
-//        /** @var BaseActiveRecord $model */
-//        $model = $this->owner;
-//
-//        return preg_replace_callback('/{([^}]+)}/', function ($matches) use ($model)
-//        {
-//            $name = $matches[1];
-//            $attribute = ArrayHelper::getValue($model, $name);
-//            if (is_string($attribute) || is_numeric($attribute))
-//            {
-//                return $attribute;
-//            }
-//            else
-//            {
-//                return $matches[0];
-//            }
-//        }, $path);
-//    }
-//
-// 
-//
-//    /**
-//     * @param UploadedFile $file
-//     * @return string
-//     */
-//    protected function getFileName($file)
-//    {
-//        if ($this->generateNewName)
-//        {
-//            return $this->generateNewName instanceof Closure
-//                ? call_user_func($this->generateNewName, $file)
-//                : $this->generateFileName($file);
-//        }
-//        else
-//        {
-//            return $this->sanitize($file->name);
-//        }
-//    }
-//
-//    /**
-//     * Replaces characters in strings that are illegal/unsafe for filename.
-//     *
-//     * #my*  unsaf<e>&file:name?".png
-//     *
-//     * @param string $filename the source filename to be "sanitized"
-//     * @return boolean string the sanitized filename
-//     */
-//    public static function sanitize($filename)
-//    {
-//        return str_replace([' ', '"', '\'', '&', '/', '\\', '?', '#'], '-', $filename);
-//    }
-//
-//    /**
-//     * Generates random filename.
-//     * @param UploadedFile $file
-//     * @return string
-//     */
-//    protected function generateFileName($file)
-//    {
-//        return uniqid() . '.' . $file->extension;
-//    }
-
 
 }
