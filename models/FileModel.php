@@ -137,17 +137,6 @@ class FileModel extends ActiveRecord
         $this->on($this::EVENT_BEFORE_DELETE, [$this, '_preDeleteActions']);
 
 
-        // $this->on($this::EVENT_BEFORE_DELETE, [$this, '_preUpdateActions']);
-
-
-        //  $this->on($this::EVENT_AFTER_INSERT, [$this, '_makeCopies']);
-
-        //  $this->on($this::EVENT_AFTER_UPDATE, [$this, '_makeCopies']);
-
-        //  $this->on($this::EVENT_AFTER_INSERT, [$this, '_deployFile']);
-
-        // $this->on($this::EVENT_AFTER_UPDATE, [$this, '_deployFile']);
-
     }
 
 
@@ -433,7 +422,7 @@ class FileModel extends ActiveRecord
      * @param String $childName
      * @return $this
      */
-    protected function _getChild($childName)
+    protected function _getChild($childName = NULL)
     {
 
         if (is_null($this->primaryKey))

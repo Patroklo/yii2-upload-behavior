@@ -69,7 +69,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ### UploadBehavior
 
-This behavior will make the upload of files 
+This behavior will take charge of uploading files, while the rules of the form should be stored in the parent model holding this behavior. 
 
 * **attribute** (required) The attribute that will link the model with the file we want to upload.
 
@@ -88,7 +88,7 @@ This behavior will make the upload of files
 
 ### UploadImageBehavior
 
-It has the UploadBehavior attributes and:
+It has the basic UploadBehavior attributes and a group of image related additional functions:
 
 * **thumbs** Array list with the thumbnail properties and actions
         ```php
@@ -109,9 +109,27 @@ It has the UploadBehavior attributes and:
             ]
         ```
         
+        
+#### Valid image actions
+
+The image actions use the `yii\image` class by default.
+
+* **crop** Needs a `width (int)`, `height (int)` and `start (int[x,y])` values. By default start will be [0,0].
+ 
+* **thumbnail** `width (int)`, `height (int)` and `mode (string)` values. The valid modes are (`ManipulatorInterface::THUMBNAIL_INSET` or `ManipulatorInterface::THUMBNAIL_OUTBOUND`).
+        
 ## Usage
 
-As an example:
+* 1. Add new public fields for each different file you are going to link into the method.
+
+```php
+
+    public $file;
+    public $avatar;
+
+```
+
+* 2. Add the needed behaviors in the model's method. One for each file type that will be linked into the model. 
 
 ```php
     function behaviors()
@@ -126,7 +144,142 @@ As an example:
             [
                 'class' => UploadImageBehavior::className(),
                 'attribute' => 'avatar',
+                'scnearios' => ['default'],
+                'fileActionOnSave' => 'delete'
+                'imageActions' => [['action' => 'thumbnail', 'width' => '900', 'height' => '400']]
             ],
         ];
     }
+```
+
+* 3. Add the file rules into the parent model method:
+
+```php
+
+    public function rules()
+    {
+        return [
+            ...
+            [['file', 'avatar'], 'file', 'on' => ['insert', 'update', 'default']],
+            ['file', 'required', 'on' => ['insert']],
+            ['avatar', 'file', 'extensions' => ['jpg'], 'maxSize' => 1020*1024]
+            ...
+        ];
+    }
+
+``` 
+
+* 4. Insert in the CRUD forms the upload fields linked with the method's properties.
+
+```php
+        <?= $form->field($model, 'file')->fileInput() ?>
+        <?= $form->field($model, 'avatar')->fileInput() ?>
+``` 
+
+* 5. When saving the model data, the behaviors will upload the file and store all the data automatically. Also, when deleting a method object, it will delete all the files linked to it.
+
+## File operations
+
+### Accessing one file
+
+* 1. Load a model object
+
+```php
+    $object = MethodClass::find()->where(['id' => 1])->one();
+```
+
+* 2. Call the loadFile method with it's appropriate attribute
+
+```php
+    $file = $object->linkedFile('file');
+```
+
+
+### Accessing multiple files
+
+* 1. Load a model object
+
+```php
+    $object = MethodClass::find()->where(['id' => 1])->one();
+```
+
+* 2. Call the loadFiles method with it's appropriate attribute
+
+```php
+    $fileList = $object->linkedFiles('file');
+```
+
+### Delete a specific linked file
+
+* 1. Load a model object
+
+```php
+    $object = MethodClass::find()->where(['id' => 1])->one();
+```
+
+* 2. Load a specific file
+
+```php
+    $file = $object->linkedFile('file');
+```
+
+* 3 Call the deleteFiles method with it's attribute and file object
+
+```php
+    $object->deleteFiles('file', $file);
+```
+
+
+### Delete all linked files
+
+* 1. Load a model object
+
+```php
+    $object = MethodClass::find()->where(['id' => 1])->one();
+```
+
+* 2. Call the deleteFiles method with it's appropriate attribute
+
+```php
+    $object->deleteFiles('file');
+```
+
+### Get a thumbnail from an image
+
+* 1. Load a model object
+
+```php
+    $object = MethodClass::find()->where(['id' => 1])->one();
+```
+
+* 2. Call the loadFile method with it's appropriate attribute
+
+```php
+    $file = $object->linkedFile('file');
+```
+
+* 3. Call the getChild method with it's specific thumbnail name
+
+```php
+    $thumbnail = $file->getChild('thumb'); 
+```
+
+### Get multiple thumbnails from an image
+
+* 1. Load a model object
+
+```php
+    $object = MethodClass::find()->where(['id' => 1])->one();
+```
+
+* 2. Call the loadFile method with it's appropriate attribute
+
+```php
+    $file = $object->linkedFile('file');
+```
+
+* 3. Call the getChildren method with, optionally, it's specific thumbnail name
+
+```php
+    $thumbnailList = $file->getChildren(); 
 ```
