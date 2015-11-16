@@ -101,7 +101,7 @@ class UploadBehavior extends Behavior
             $basePath = Yii::$app->getModule('uploadBehavior')->baseDir;
 
             $this->fileManager = [
-                'class' => 'cyneek\yii2\upload\models\LocalFileManager',
+                'class' => 'cyneek\yii2\uploadBehavior\models\LocalFileManager',
                 'basePath' => Yii::getAlias($basePath),
             ];
         }
