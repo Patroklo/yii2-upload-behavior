@@ -74,8 +74,7 @@ class UploadBehavior extends Behavior
     /**
      * @var UploadedFile the uploaded file instance.
      */
-    protected $_file;
-
+    protected $_files;
 
     protected $_fileModel = 'FileModel';
 
@@ -135,26 +134,26 @@ class UploadBehavior extends Behavior
         {
             if (($file = $model->{$this->attribute}) instanceof UploadedFile)
             {
-                $this->_file = $file;
+                $this->_files[] = $file;
             }
             else
             {
                 if ($this->instanceByName === TRUE)
                 {
-                    $this->_file = UploadedFile::getInstanceByName($this->attribute);
+                    $this->_files = UploadedFile::getInstancesByName($this->attribute);
                 }
                 else
                 {
-                    $this->_file = UploadedFile::getInstance($model, $this->attribute);
+                    $this->_files = UploadedFile::getInstances($model, $this->attribute);
                 }
 
-                $model->{$this->attribute} = $this->_file;
+                $model->{$this->attribute} = $this->_files;
             }
 
-            if ($this->_file instanceof UploadedFile)
+           /* if ($this->_files instanceof UploadedFile)
             {
                 $model->{$this->attribute};
-            }
+            }*/
         }
     }
 
@@ -167,10 +166,16 @@ class UploadBehavior extends Behavior
         $model = $this->owner;
         if (in_array($model->scenario, $this->scenarios))
         {
-            if ($this->_file instanceof UploadedFile && !$model->getIsNewRecord() && $this->fileActionOnSave === 'delete')
+
+            foreach ($this->_files as $_file)
             {
-                $this->deleteFiles($this->attribute);
+                if ($_file instanceof UploadedFile && !$model->getIsNewRecord() && $this->fileActionOnSave === 'delete')
+                {
+                    $this->deleteFiles($this->attribute);
+                }
             }
+
+
         }
     }
 
@@ -222,20 +227,25 @@ class UploadBehavior extends Behavior
         /** @var BaseActiveRecord $model */
         $model = $this->owner;
 
-        if ($this->_file instanceof UploadedFile)
+
+        foreach ($this->_files as $_file)
         {
-
-            $previousFile = NULL;
-
-            if (!$model->getIsNewRecord() && $this->fileActionOnSave === 'update')
+            if ($_file instanceof UploadedFile)
             {
-                $previousFile = $this->linkedFile($this->attribute);
+
+                $previousFile = NULL;
+
+                if (!$model->getIsNewRecord() && $this->fileActionOnSave === 'update')
+                {
+                    $previousFile = $this->linkedFile($this->attribute);
+                }
+
+                $savedFile = $this->save($_file, $previousFile);
+
+                $this->afterUpload($savedFile);
             }
-
-            $savedFile = $this->save($this->_file, $previousFile);
-
-            $this->afterUpload($savedFile);
         }
+
     }
 
     /**

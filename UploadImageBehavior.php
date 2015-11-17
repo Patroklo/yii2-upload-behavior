@@ -137,7 +137,6 @@ class UploadImageBehavior extends UploadBehavior
         parent::afterUpload($image);
 
         $this->createThumbs($image);
-
     }
 
 
@@ -193,24 +192,24 @@ class UploadImageBehavior extends UploadBehavior
 
         foreach ($this->thumbs as $profile => $actions)
         {
+            foreach ($this->_files as $_file)
+            {
+                $modelData = Yii::$app->getModule('uploadBehavior')->model($this->_fileModel, [
+                    'file' => $_file,
+                    'model' => $this->owner,
+                    'uploadPath' => $this->thumbPath,
+                    'entityAttribute' => $this->attribute,
+                    'fileManager' => $this->_getFileManager(),
+                    'parentModel' => $image,
+                    'imageActions' => $actions,
+                    'childName' => $profile,
+                ]);
 
-            $modelData = Yii::$app->getModule('uploadBehavior')->model($this->_fileModel, [
-                'file' => $this->_file,
-                'model' => $this->owner,
-                'uploadPath' => $this->thumbPath,
-                'entityAttribute' => $this->attribute,
-                'fileManager' => $this->_getFileManager(),
-                'parentModel' => $image,
-                'imageActions' => $actions,
-                'childName' => $profile,
-            ]);
+                /** @var ImageFileModel $fileModel */
+                $fileModel = Yii::createObject($modelData);
 
-            /** @var ImageFileModel $fileModel */
-            $fileModel = Yii::createObject($modelData);
-
-            $this->save($this->_file, $fileModel);
-
-
+                $this->save($_file, $fileModel);
+            }
         }
     }
 
