@@ -85,6 +85,7 @@ This behavior will take charge of uploading files, while the rules of the form s
 
 * **instanceByName** Getting file instance by name.
 
+* **multiUpload** (default: false) If true, the behavior will check for multiple uploaded files instead of only one.
 
 ### UploadImageBehavior
 

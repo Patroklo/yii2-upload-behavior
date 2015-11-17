@@ -46,6 +46,10 @@ class UploadBehavior extends Behavior
      */
     public $fileActionOnSave = 'insert';
     /**
+     * @var bool if true, will use multiupload methods
+     */
+    public $multiUpload = FALSE;
+    /**
      * @var string the attribute which holds the attachment.
      */
     public $attribute;
@@ -147,7 +151,14 @@ class UploadBehavior extends Behavior
                     $this->_files = UploadedFile::getInstances($model, $this->attribute);
                 }
 
-                $model->{$this->attribute} = $this->_files;
+                if ($this->multiUpload == FALSE)
+                {
+                    $model->{$this->attribute} = reset($this->_files);
+                }
+                else
+                {
+                    $model->{$this->attribute} = $this->_files;
+                }
             }
 
            /* if ($this->_files instanceof UploadedFile)
