@@ -6,7 +6,7 @@
     "yii2",
     "upload"
   ],
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "yii2-extension",
   "license": "BSD",
   "authors": [

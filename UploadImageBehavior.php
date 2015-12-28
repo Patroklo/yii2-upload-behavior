@@ -91,7 +91,7 @@ class UploadImageBehavior extends UploadBehavior
      */
     protected function _normalizeThumbData()
     {
-        if ($this->thumbPath === null)
+        if ($this->thumbPath === NULL)
         {
             $this->thumbPath = $this->path;
         }
@@ -211,5 +211,31 @@ class UploadImageBehavior extends UploadBehavior
             }
         }
     }
+
+
+    /**
+     * Returns all the files linked to the model
+     * in the attribute set in the behavior
+     *
+     * @param $attribute
+     * @return FileModel[]
+     */
+    public function linkedImages($attribute)
+    {
+        return $this->linkedFiles($attribute);
+    }
+
+    /**
+     * Returns the first or only file linked to the model
+     * in the attribute set in the behavior
+     *
+     * @param $attribute
+     * @return FileModel
+     */
+    public function linkedImage($attribute)
+    {
+        return $this->linkedFile($attribute);
+    }
+
 
 }
