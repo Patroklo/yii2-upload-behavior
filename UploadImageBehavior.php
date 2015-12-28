@@ -97,7 +97,7 @@ class UploadImageBehavior extends UploadBehavior
         }
 
 
-        if (!is_array(reset($this->imageActions)))
+        if (!empty($this->imageActions) && !is_array(reset($this->imageActions)))
         {
             $this->imageActions = [$this->imageActions];
         }
@@ -148,7 +148,6 @@ class UploadImageBehavior extends UploadBehavior
      */
     protected function save($file, $fileModel = NULL)
     {
-
         if (!is_null($fileModel))
         {
             $fileModel->file = $file;
