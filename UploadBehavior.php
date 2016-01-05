@@ -160,11 +160,6 @@ class UploadBehavior extends Behavior
                     $model->{$this->attribute} = $this->_files;
                 }
             }
-
-           /* if ($this->_files instanceof UploadedFile)
-            {
-                $model->{$this->attribute};
-            }*/
         }
     }
 
@@ -175,18 +170,16 @@ class UploadBehavior extends Behavior
     {
         /** @var BaseActiveRecord $model */
         $model = $this->owner;
-        if (in_array($model->scenario, $this->scenarios))
+
+        if (in_array($model->scenario, $this->scenarios) && !empty($this->_files))
         {
-
-            foreach ($this->_files as $_file)
-            {
-                if ($_file instanceof UploadedFile && !$model->getIsNewRecord() && $this->fileActionOnSave === 'delete')
+                foreach ($this->_files as $_file)
                 {
-                    $this->deleteFiles($this->attribute);
+                    if ($_file instanceof UploadedFile && !$model->getIsNewRecord() && $this->fileActionOnSave === 'delete')
+                    {
+                        $this->deleteFiles($this->attribute);
+                    }
                 }
-            }
-
-
         }
     }
 
@@ -226,6 +219,7 @@ class UploadBehavior extends Behavior
             $this->fileManager = Yii::createObject($this->fileManager);
 
         }
+
         return $this->fileManager;
     }
 
@@ -238,22 +232,24 @@ class UploadBehavior extends Behavior
         /** @var BaseActiveRecord $model */
         $model = $this->owner;
 
-
-        foreach ($this->_files as $_file)
+        if (!empty($this->_files))
         {
-            if ($_file instanceof UploadedFile)
+            foreach ($this->_files as $_file)
             {
-
-                $previousFile = NULL;
-
-                if (!$model->getIsNewRecord() && $this->fileActionOnSave === 'update')
+                if ($_file instanceof UploadedFile)
                 {
-                    $previousFile = $this->linkedFile($this->attribute);
+
+                    $previousFile = NULL;
+
+                    if (!$model->getIsNewRecord() && $this->fileActionOnSave === 'update')
+                    {
+                        $previousFile = $this->linkedFile($this->attribute);
+                    }
+
+                    $savedFile = $this->save($_file, $previousFile);
+
+                    $this->afterUpload($savedFile);
                 }
-
-                $savedFile = $this->save($_file, $previousFile);
-
-                $this->afterUpload($savedFile);
             }
         }
 
